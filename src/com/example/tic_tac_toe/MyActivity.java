@@ -7,10 +7,11 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MyActivity extends Activity {
-    private TextView[] arr = new TextView[9];
+    private ImageView[] arr = new ImageView[9];
 
     /**
      * Called when the activity is first created.
@@ -19,19 +20,21 @@ public class MyActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        arr[0] = (TextView) findViewById(R.id.a1);
-        arr[1] = (TextView) findViewById(R.id.a2);
-        arr[2] = (TextView) findViewById(R.id.a3);
-        arr[3] = (TextView) findViewById(R.id.a4);
-        arr[4] = (TextView) findViewById(R.id.a5);
-        arr[5] = (TextView) findViewById(R.id.a6);
-        arr[6] = (TextView) findViewById(R.id.a7);
-        arr[7] = (TextView) findViewById(R.id.a8);
-        arr[8] = (TextView) findViewById(R.id.a9);
+        arr[0] = (ImageView) findViewById(R.id.a1);
+        arr[1] = (ImageView) findViewById(R.id.a2);
+        arr[2] = (ImageView) findViewById(R.id.a3);
+        arr[3] = (ImageView) findViewById(R.id.a4);
+        arr[4] = (ImageView) findViewById(R.id.a5);
+        arr[5] = (ImageView) findViewById(R.id.a6);
+        arr[6] = (ImageView) findViewById(R.id.a7);
+        arr[7] = (ImageView) findViewById(R.id.a8);
+        arr[8] = (ImageView) findViewById(R.id.a9);
     }
 
     public void viewClicked(View view) {
-        ((TextView) view).setText("X");
+        ((ImageView) view).setImageDrawable(getResources().getDrawable(R.drawable.x));
+        ((ImageView) view).setTag("X");
+
         Log.e("tic", "clicked on view tag=" + view.getTag() + "  id=" + view.getId());
         checkWin("X");
     }
@@ -59,9 +62,9 @@ public class MyActivity extends Activity {
         }
     }
 
-    private boolean winsInLine(TextView field1, TextView field2, TextView field3) {
-        return (!TextUtils.isEmpty(field1.getText())) &&
-                field1.getText().equals(field2.getText()) &&
-                field2.getText().equals(field3.getText());
+    private boolean winsInLine(ImageView field1, ImageView field2, ImageView field3) {
+        return field1.getTag()!=null &&
+                field1.getTag()==(field2.getTag()) &&
+                field2.getTag()==(field3.getTag());
     }
 }

@@ -3,6 +3,7 @@
               android:orientation="vertical"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
+              android:background="@android:color/darker_gray"
         >
     <LinearLayout
             android:layout_width="match_parent"
@@ -34,5 +35,29 @@
         <include layout="@layout/game_field"
                  android:id="@+id/a9"/>
     </LinearLayout>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="я первым хожу"
+                    android:id="@+id/radioButton" android:checked="true"/>
+            <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="первым ходит андроид"
+                    android:id="@+id/radioButton2" android:checked="false"/>
+        </RadioGroup>
+    </LinearLayout>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="новая игра"
+            android:id="@+id/button"/>
+
 </LinearLayout>
 
