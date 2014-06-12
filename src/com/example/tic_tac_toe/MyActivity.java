@@ -37,6 +37,7 @@ public class MyActivity extends Activity {
 
         Log.e("tic", "clicked on view tag=" + view.getTag() + "  id=" + view.getId());
         checkWin("X");
+
     }
 
     private void checkWin(String player) {
