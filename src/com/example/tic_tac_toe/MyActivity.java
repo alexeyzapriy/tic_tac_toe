@@ -9,10 +9,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import java.util.Random;
 
 public class MyActivity extends Activity {
     private ImageView[] arr = new ImageView[9];
-
+    private Random random = new Random();
+    private int viewTarget =-1;
     /**
      * Called when the activity is first created.
      */
@@ -32,15 +34,45 @@ public class MyActivity extends Activity {
     }
 
     public void viewClicked(View view) {
+        if(((ImageView)view).getTag()==null){
         ((ImageView) view).setImageDrawable(getResources().getDrawable(R.drawable.x));
         ((ImageView) view).setTag("X");
 
-        Log.e("tic", "clicked on view tag=" + view.getTag() + "  id=" + view.getId());
-        checkWin("X");
+       // Log.e("tic", "clicked on view tag=" + view.getTag() + "  id=" + view.getId());
+        if(checkWin()){
+            showAlert("X");
+        }else{
 
+        while (!getNumber()){}
+                arr[viewTarget].setTag("O");
+                arr[viewTarget].setImageDrawable(getResources().getDrawable(R.drawable.o));
+                if(checkWin()) showAlert("O");
+         }
+        }
     }
 
-    private void checkWin(String player) {
+    private boolean getNumber() {
+
+        viewTarget = random.nextInt(9);
+        if(arr[viewTarget].getTag()==null){
+            return true;
+        }else return false;
+    }
+
+    private void showAlert(String pleer) {
+        new AlertDialog.Builder(this)
+                .setTitle("Победа!")
+                .setMessage("Победил "+ pleer)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                })
+                .show();
+    }
+
+    private boolean checkWin() {
         if (winsInLine(arr[0], arr[1], arr[2]) ||
                 winsInLine(arr[3], arr[4], arr[5]) ||
                 winsInLine(arr[6], arr[7], arr[8]) ||
@@ -50,17 +82,9 @@ public class MyActivity extends Activity {
                 winsInLine(arr[0], arr[4], arr[8]) ||
                 winsInLine(arr[2], arr[4], arr[6]) )
         {
-            new AlertDialog.Builder(this)
-                    .setTitle("Победа!")
-                    .setMessage("Победил " + player)
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            finish();
-                        }
-                    })
-                    .show();
+            return true;
         }
+        else return  false;
     }
 
     private boolean winsInLine(ImageView field1, ImageView field2, ImageView field3) {
