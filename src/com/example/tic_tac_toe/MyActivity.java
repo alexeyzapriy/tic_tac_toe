@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import java.util.Random;
 
@@ -33,6 +34,16 @@ public class MyActivity extends Activity {
         arr[8] = (ImageView) findViewById(R.id.a9);
     }
 
+    public void newGame_Click(View view){
+        for (int i = 0; i < arr.length; i++ ){
+            arr[i].setTag(null);
+            arr[i].setImageDrawable(null);
+        }
+        RadioButton rb = (RadioButton)findViewById(R.id.radioButton2);
+        if(rb.isChecked()){
+            goAndroid();
+        }
+    }
     public void viewClicked(View view) {
         if(((ImageView)view).getTag()==null){
         ((ImageView) view).setImageDrawable(getResources().getDrawable(R.drawable.x));
@@ -42,13 +53,16 @@ public class MyActivity extends Activity {
         if(checkWin()){
             showAlert("X");
         }else{
-
-        while (!getNumber()){}
-                arr[viewTarget].setTag("O");
-                arr[viewTarget].setImageDrawable(getResources().getDrawable(R.drawable.o));
-                if(checkWin()) showAlert("O");
+            goAndroid();
          }
         }
+    }
+
+    private void goAndroid() {
+        while (!getNumber()){}
+        arr[viewTarget].setTag("O");
+        arr[viewTarget].setImageDrawable(getResources().getDrawable(R.drawable.o));
+        if(checkWin()) showAlert("O");
     }
 
     private boolean getNumber() {
@@ -66,8 +80,7 @@ public class MyActivity extends Activity {
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
-                    }
+                        dialogInterface.cancel();                   }
                 })
                 .show();
     }
