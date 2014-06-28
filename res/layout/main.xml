@@ -44,20 +44,24 @@
             <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="я первым хожу"
-                    android:id="@+id/radioButton" android:checked="true"/>
+                    android:text="@string/I_first"
+                    android:id="@+id/radioButton"
+                    android:checked="true"/>
             <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="первым ходит андроид"
-                    android:id="@+id/radioButton2" android:checked="false"/>
+                    android:text="@string/Android_first"
+                    android:id="@+id/radioButton2"
+                    android:checked="false"/>
         </RadioGroup>
     </LinearLayout>
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="новая игра"
-            android:id="@+id/button"/>
+            android:text="@string/new_game"
+            android:id="@+id/button"
+            android:onClick="newGame_Click"
+            />
 
 </LinearLayout>
 

@@ -4,18 +4,17 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.TextView;
 import java.util.Random;
 
 public class MyActivity extends Activity {
     private ImageView[] arr = new ImageView[9];
     private Random random = new Random();
     private int viewTarget =-1;
+    private ImageView currentStep;
     /**
      * Called when the activity is first created.
      */
@@ -59,10 +58,19 @@ public class MyActivity extends Activity {
     }
 
     private void goAndroid() {
+
+        //проаерка можно ли сделать победный ход
+        if(if_I_win()){
+            currentStep.setTag("O");
+            currentStep.setImageDrawable(getResources().getDrawable(R.drawable.o));
+            if(checkWin()) showAlert("O");
+        }
+        else{
         while (!getNumber()){}
         arr[viewTarget].setTag("O");
         arr[viewTarget].setImageDrawable(getResources().getDrawable(R.drawable.o));
         if(checkWin()) showAlert("O");
+        }
     }
 
     private boolean getNumber() {
@@ -104,5 +112,34 @@ public class MyActivity extends Activity {
         return field1.getTag()!=null &&
                 field1.getTag()==(field2.getTag()) &&
                 field2.getTag()==(field3.getTag());
+    }
+    private boolean if_I_win() {
+               if(winning_move(arr[0], arr[1], arr[2])){ return true;}
+        if(winning_move(arr[3], arr[4], arr[5])){ return true;}
+        if(winning_move(arr[6], arr[7], arr[8])){ return true;}
+        if(winning_move(arr[0], arr[3], arr[6])){ return true;}
+        if(winning_move(arr[1], arr[4], arr[7])){ return true;}
+        if(winning_move(arr[2], arr[5], arr[8])){ return true;}
+        if(winning_move(arr[0], arr[4], arr[8])){ return true;}
+        if(winning_move(arr[2], arr[4], arr[6])){ return true;}
+        return  false;
+    }
+    private boolean winning_move(ImageView field1, ImageView field2, ImageView field3) {
+       ImageView[] arrTemp = {field1, field2, field3};
+        int count_O = 0;
+        int index_empty = -1;
+        for (int i=0; i<arrTemp.length; i++){
+                if(arrTemp[i].getTag()=="O"){
+                    count_O++;
+                }
+                else if(arrTemp[i].getTag()==null) {
+                    index_empty = i;
+                }
+        }
+        if(count_O==2&&index_empty!=-1){
+        currentStep = arrTemp[index_empty];
+            return true;
+        }
+        return false;
     }
 }

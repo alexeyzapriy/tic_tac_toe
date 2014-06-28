@@ -2,4 +2,7 @@
 <resources>
     <string name="app_name">tic_tac_toe</string>
     <string name="hello_world">Hello World, MyActivity</string>
+    <string name="I_first">я первым хожу</string>
+    <string name="Android_first">первым ходит андроид</string>
+    <string name="new_game">новая игра</string>
 </resources>
