@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -51,6 +50,9 @@ public class MyActivity extends Activity {
        // Log.e("tic", "clicked on view tag=" + view.getTag() + "  id=" + view.getId());
         if(checkWin()){
             showAlert("X");
+        }else if(dead_heat())
+        {
+            showAlertDeadHeat();
         }else{
             goAndroid();
          }
@@ -63,13 +65,27 @@ public class MyActivity extends Activity {
         if(if_I_win()){
             currentStep.setTag("O");
             currentStep.setImageDrawable(getResources().getDrawable(R.drawable.o));
-            if(checkWin()) showAlert("O");
+            if(checkWin()) {
+                showAlert("O");
+            }
         }
-        else{
+        else if(if_danger()){ //проверка есть ли опасные линии
+            currentStep.setTag("O");
+            currentStep.setImageDrawable(getResources().getDrawable(R.drawable.o));
+            if(checkWin()) {
+                showAlert("O");
+            }
+            else
+            if(dead_heat())
+            {
+                showAlertDeadHeat();
+            }
+        }
+        else{ //случайный ход
         while (!getNumber()){}
         arr[viewTarget].setTag("O");
         arr[viewTarget].setImageDrawable(getResources().getDrawable(R.drawable.o));
-        if(checkWin()) showAlert("O");
+        if(dead_heat())  showAlertDeadHeat();
         }
     }
 
@@ -93,6 +109,19 @@ public class MyActivity extends Activity {
                 .show();
     }
 
+    private void showAlertDeadHeat()
+    {
+        new AlertDialog.Builder(this)
+                .setTitle("Ничья!")
+                .setMessage("Нет победителя.")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();                   }
+                })
+                .show();
+    }
+
     private boolean checkWin() {
         if (winsInLine(arr[0], arr[1], arr[2]) ||
                 winsInLine(arr[3], arr[4], arr[5]) ||
@@ -108,6 +137,14 @@ public class MyActivity extends Activity {
         else return  false;
     }
 
+    private boolean dead_heat()
+    {
+        for (int i = 0; i< arr.length; i++)
+        {
+            if(arr[i].getTag()==null) return false;
+        }
+       return true;
+    }
     private boolean winsInLine(ImageView field1, ImageView field2, ImageView field3) {
         return field1.getTag()!=null &&
                 field1.getTag()==(field2.getTag()) &&
@@ -138,6 +175,36 @@ public class MyActivity extends Activity {
         }
         if(count_O==2&&index_empty!=-1){
         currentStep = arrTemp[index_empty];
+            return true;
+        }
+        return false;
+    }
+
+    private boolean if_danger() {
+        if(dangerous_line(arr[0], arr[1], arr[2])){ return true;}
+        if(dangerous_line(arr[3], arr[4], arr[5])){ return true;}
+        if(dangerous_line(arr[6], arr[7], arr[8])){ return true;}
+        if(dangerous_line(arr[0], arr[3], arr[6])){ return true;}
+        if(dangerous_line(arr[1], arr[4], arr[7])){ return true;}
+        if(dangerous_line(arr[2], arr[5], arr[8])){ return true;}
+        if(dangerous_line(arr[0], arr[4], arr[8])){ return true;}
+        if(dangerous_line(arr[2], arr[4], arr[6])){ return true;}
+        return  false;
+    }
+    private boolean dangerous_line(ImageView field1, ImageView field2, ImageView field3) {
+        ImageView[] arrTemp = {field1, field2, field3};
+        int count_X = 0;
+        int index_empty = -1;
+        for (int i=0; i<arrTemp.length; i++){
+            if(arrTemp[i].getTag()=="X"){
+                count_X++;
+            }
+            else if(arrTemp[i].getTag()==null) {
+                index_empty = i;
+            }
+        }
+        if(count_X == 2 && index_empty != -1){
+            currentStep = arrTemp[index_empty];
             return true;
         }
         return false;
